@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salmo, Surprise Gaar Ah!</title>
+    <style>
+        /* --- General Styles --- */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #3a1a3a 100%); /* Black and purple gradient */
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            flex-direction: column;
+        }
+
+        h1, h2, h3 {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* --- Heart Animation --- */
+        .heart {
+            color: #e74c3c;
+            font-size: 1.5em;
+            animation: beat 1s infinite alternate;
+            margin: 0 5px;
+        }
+
+        @keyframes beat {
+            to { transform: scale(1.2); }
+        }
+
+        /* --- Surprise Section --- */
+        #surprise-section {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .opener-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .special-name {
+            color: #d4a757; /* Gold color for name */
+            font-weight: bold;
+        }
+
+        .gift-box-container {
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .gift-box {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gift-box.open {
+            transform: rotateY(-180deg) translateZ(100px) scale(0.1);
+            opacity: 0;
+        }
+
+        .gift-box-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #5d2b8a; /* Dark purple border */
+            box-sizing: border-box;
+            background-color: #2a0a2a; /* Dark purple/black inner box */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backface-visibility: hidden;
+        }
+
+        .gift-box-front {
+            background-color: #d4a757; /* Gold front for premium feel */
+            color: #2a0a2a;
+            font-size: 2em;
+            transform: rotateY(0deg) translateZ(150px);
+            z-index: 2;
+        }
+
+        /* Styling for front text to be inside heart */
+        .front-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .front-heart {
+            font-size: 6em;
+            color: rgba(231, 76, 60, 0.8); /* Semi-transparent red heart */
+            position: absolute;
+            z-index: 1;
+        }
+
+        .front-text {
+            position: relative;
+            z-index: 2;
+            font-size: 0.5em;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .gift-box-back { transform: rotateY(180deg) translateZ(150px); }
+        .gift-box-right { transform: rotateX(0deg) rotateY(90deg) translateZ(150px); }
+        .gift-box-left { transform: rotateX(0deg) rotateY(-90deg) translateZ(150px); }
+        .gift-box-top { transform: rotateX(90deg) translateZ(150px); }
+        .gift-box-bottom { transform: rotateX(-90deg) translateZ(150px); }
+
+        /* --- Video Display --- */
+        #video-container {
+            width: 80%;
+            max-width: 600px;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            margin-bottom: 20px;
+            border: 5px solid #d4a757;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        #video-container.show {
+            display: block;
+            opacity: 1;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+        }
+
+        .gift-from-text {
+            font-style: italic;
+            color: #ccc;
+            margin-top: 10px;
+            font-size: 1em;
+            display: none;
+        }
+
+        .gift-from-text.show {
+            display: block;
+        }
+
+        /* --- Questions Section --- */
+        #questions-section {
+            display: none; /* Hidden initially */
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        #questions-section.show {
+            display: flex;
+        }
+
+        .q-title {
+            font-size: 2.2em;
+            color: #d4a757;
+            margin-bottom: 30px;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .question-text {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            flex-grow: 1;
+            max-width: 45%;
+        }
+
+        .option-button.true {
+            background-color: #d4a757;
+            color: #1a1a1a;
+        }
+
+        .option-button.true:hover {
+            background-color: #f1c40f;
+            transform: scale(1.05);
+        }
+
+        .option-button.false {
+            background-color: transparent;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .option-button.false:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .option-button.selected {
+            border-color: #e74c3c !important;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.8);
+            font-weight: bold;
+        }
+
+        /* --- Send to WhatsApp Button --- */
+        #whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            display: none;
+            margin-top: 30px;
+            text-decoration: none;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        #whatsapp-btn:hover {
+            background-color: #1ebe5d;
+            transform: scale(1.1);
+        }
+
+        #whatsapp-btn.show {
+            display: inline-block;
+        }
+
+        @media (max-width: 600px) {
+            .opener-title { font-size: 2em; }
+            .gift-box-container { width: 250px; height: 250px; }
+            .option-button { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SECTION 1: SURPRISE OPENER -->
+    <div id="surprise-section">
+        <h1 class="opener-title">Maanta waa maalin gaar ah... <span class="special-name">Salmo</span>! <span class="heart">❤</span></h1>
+        <p>Guji sanduuqa si aad u furto hadiyaddaada.</p>
+        
+        <div class="gift-box-container" onclick="openGift()">
+            <div class="gift-box" id="giftBox">
+                <div class="gift-box-face gift-box-front">
+                    <div class="front-content">
+                        <span class="front-heart">❤</span>
+                        <span class="front-text">FUD</span>
+                    </div>
+                </div>
+                <div class="gift-box-face gift-box-back">GIFT</div>
+                <div class="gift-box-face gift-box-right">LOVE</div>
+                <div class="gift-box-face gift-box-left">SALMO</div>
+                <div class="gift-box-face gift-box-top">🎁</div>
+                <div class="gift-box-face gift-box-bottom">❤</div>
+            </div>
+        </div>
+
+        <div id="video-container">
+            <video id="surpriseVideo" loop muted>
+                <source src="1000195249.mp4" type="video/mp4">
+                Browser-kaagu ma taageero video-ga.
+            </video>
+        </div>
+
+        <p class="gift-from-text" id="giftFrom">Gift-yadan kugu talagaly <strong>Abdirahman</strong>.</p>
+    </div>
+
+    <!-- SECTION 2: QUESTIONS SECTION -->
+    <div id="questions-section">
+        <h2 class="q-title">Hada ka dib... ii sheeg waxa aad dareemayso <span class="heart">❤</span></h2>
+        
+        <!-- Question 1 -->
+        <div class="question-block" id="q1">
+            <p class="question-text">1. Sidee kaaga dhigan tahay hadiyaddan?</p>
+            <div class="options-container">
+                <button class="option-button true" onclick="selectOption(1, 'Aad u cajiib ah!')">Aad u cajiib ah!</button>
+                <button class="option-button false" onclick="selectOption(1, 'Caadi maahan!')">Caadi maahan!</button>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-block" id="q2">
+            <p class="question-text">2. Majira qof saan horey kugu sameyay?</p>
+            <div class="options-container">
+                <button class="option-button true" onclick="selectOption(2, 'Maya waligeed!')">Maya waligeed!</button>
+                <button class="option-button false" onclick="selectOption(2, 'Haa, laakiin midan ayaa ka daran!')">Haa, laakiin midan ayaa ka daran!</button>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-block" id="q3">
+            <p class="question-text">3. Aniga agteyda sidee ka tahay, Salmo?</p>
+            <div class="options-container">
+                <button class="option-button false" onclick="selectOption(3, 'Waa iska saaxiib.')">Waa iska saaxiib.</button>
+                <button class="option-button true" onclick="selectOption(3, 'Waa qof ka badan saaxiib <3')">Waa qof ka badan saaxiib &lt;3</button>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-block" id="q4">
+            <p class="question-text">4. Ma jeceshahay inaan markale wax sidan ah kuu sameeyo?</p>
+            <div class="options-container">
+                <button class="option-button true" onclick="selectOption(4, 'Haa, fadlan!')">Haa, fadlan!</button>
+                <button class="option-button false" onclick="withholdAnswer(4, 'Nabad!')">Nabad!</button>
+            </div>
+        </div>
+
+        <!-- Hidden Input to store responses -->
+        <input type="hidden" id="responses" value="">
+
+        <!-- Send via WhatsApp Button -->
+        <a href="#" id="whatsapp-btn" onclick="sendWhatsApp()">U soo dir Abdirahman WhatsApp-ka</a>
+    </div>
+
+    <script>
+        let allAnswers = {};
+
+        function openGift() {
+            const giftBox = document.getElementById('giftBox');
+            const videoContainer = document.getElementById('video-container');
+            const video = document.getElementById('surpriseVideo');
+            const giftFrom = document.getElementById('giftFrom');
+            const questionsSection = document.getElementById('questions-section');
+
+            // 1. Hide box with animation
+            giftBox.classList.add('open');
+
+            // 2. Wait for box animation to finish, then show video
+            setTimeout(() => {
+                giftBox.parentElement.style.display = 'none'; // Hide container
+                videoContainer.classList.add('show');
+                video.play(); // Auto-play video
+                giftFrom.classList.add('show');
+
+                // 3. Wait a few seconds, then scroll to questions
+                setTimeout(() => {
+                    questionsSection.classList.add('show');
+                    questionsSection.scrollIntoView({ behavior: 'smooth' });
+                }, 5000); // Wait 5 seconds after video starts
+
+            }, 1500); // Wait for the gift box animation duration (1.5s)
+        }
+
+        function selectOption(qNumber, answerText) {
+            allAnswers[qNumber] = answerText;
+
+            // Update UI to show selection
+            const qBlock = document.getElementById('q' + qNumber);
+            const buttons = qBlock.querySelectorAll('.option-button');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            
+            // Find the clicked button and select it
+            event.target.classList.add('selected');
+
+            checkAllAnswered();
+        }
+
+        function withholdAnswer(qNumber, alternateText) {
+            // Special function for 'Nabad!' or other negative/withholding answers
+            allAnswers[qNumber] = alternateText + " (Iska dhaaf!)";
+            const qBlock = document.getElementById('q' + qNumber);
+            const buttons = qBlock.querySelectorAll('.option-button');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            checkAllAnswered();
+        }
+
+        function checkAllAnswered() {
+            const totalQuestions = 4;
+            const answeredCount = Object.keys(allAnswers).length;
+
+            if (answeredCount === totalQuestions) {
+                document.getElementById('whatsapp-btn').classList.add('show');
+            }
+        }
+
+        function sendWhatsApp() {
+            const phoneNumber = '252613040087'; // Switched to international format
+            let message = "*Salmo's Surprise Responses*\n\n";
+            message += "*Gift from:* Abdirahman\n\n";
+
+            for (let i = 1; i <= 4; i++) {
+                if (allAnswers[i]) {
+                    message += `*Q${i}:* ${allAnswers[i]}\n`;
+                }
+            }
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
