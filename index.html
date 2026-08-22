@@ -134,12 +134,16 @@
             document.getElementById('subHeader').innerText = "Halkan ka daawo dhammaan hadiyadahaaga!";
             document.getElementById('reveal-section').classList.add('active');
             const video = document.getElementById('myVideo');
-            if (video) video.play().catch(() => {});
+            if (video) {
+                video.play().catch(function(e) {
+                    console.log("Autoplay was prevented:", e);
+                });
+            }
         }
         function setAnswer(qNum, value, btn) {
             answers[qNum] = value;
             const buttons = btn.parentElement.querySelectorAll('.opt-btn');
-            buttons.forEach(b => b.classList.remove('selected'));
+            buttons.forEach(function(b) { b.classList.remove('selected'); });
             btn.classList.add('selected');
             if (Object.keys(answers).length === 3) {
                 document.getElementById('sendBtn').disabled = false;
