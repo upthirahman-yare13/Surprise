@@ -59,38 +59,41 @@
                 <p class="media-desc">Tani waa hadiyaddaada gaarka ah! iPhone 18 Pro Max oo dahabi ah, adiga kugu talagay Salmo! ✨</p>
             </div>
 
-            <!-- 2. BMW CAR VIDEO -->
+            <!-- 2. BMW CAR & VIDEOS -->
             <div class="section-card">
                 <div class="card-header">🏎️ BMW-ga Kugu Talagalay</div>
-                <video id="myVideo" controls playsinline preload="metadata">
-                    <source src="https://github.com/user-attachments/assets/92dbb9af-c9b5-46a2-b13f-8eeb744d3f16">
+                
+                <!-- Video 1 (BMW Updated Link) -->
+                <video id="myVideo" controls playsinline preload="auto">
+                    <source src="https://github.com/user-attachments/assets/92dbb9af-c9b5-46a2-b13f-8eeb744d3f16" type="video/mp4">
+                    Browser-kaagu ma taageerayo video-ga.
                 </video>
+
+                <!-- Video 2 -->
+                <video controls playsinline preload="auto">
+                    <source src="https://github.com/user-attachments/assets/3879264e-29bf-4a7e-ab7a-1ffcf9e9c442" type="video/mp4">
+                    Browser-kaagu ma taageerayo video-ga.
+                </video>
+
                 <p class="media-desc">BMW-gan gaarka ah waa gaadhigii aad ku riyonaysay! 🚘</p>
             </div>
 
-            <!-- 3. JASIIRADDA DALXIISKA VIDEO -->
+            <!-- 3. ISLAND & TRIP -->
             <div class="section-card">
-                <div class="card-header">🏝️ Jasiirada Dalxiiskeena</div>
-                <video controls playsinline preload="metadata">
-                    <source src="https://github.com/user-attachments/assets/3879264e-29bf-4a7e-ab7a-1ffcf9e9c442">
-                </video>
-            </div>
-
-            <!-- 4. ISLAND & TRIP PHOTO -->
-            <div class="section-card">
-                <div class="card-header">maalinka aa gabar jecel ugu sheganayo qaabkan ugu shegan rabaa😂😂</div>
+                <div class="card-header">🏝️ Jasiiradda & Safarka</div>
                 <img src="https://github.com/user-attachments/assets/e9796f60-b2b9-43ad-bdb4-1a045798d5fb" class="media-img" alt="Island">
                 <p class="media-desc">Safarkan quruxda badan ee jasiiradda waxaan u qorsheeyay inaan wadajir u tagno! 🌅</p>
             </div>
 
-            <!-- 5. GALLERY / SPECIAL MEMORIES -->
+            <!-- 4. GALLERY / SPECIAL MEMORIES -->
             <div class="section-card">
-                <div class="card-header">💖 Muuqaallo Gaar Ah😭😭 like saxibtinimo not serius</div>
+                <div class="card-header">💖 Muuqaallo Gaar Ah</div>
                 <img src="https://github.com/user-attachments/assets/7ab606b9-66ea-4b0e-a546-5ad814fb4f9a" class="media-img" alt="Moment 1">
+                <img src="https://github.com/user-attachments/assets/94087e12-30d2-47f2-8db9-29f94699d423" class="media-img" alt="Moment 2">
                 <div class="sender-tag">Gift-yadan kugu talagaly <strong>Abdirahman</strong> 🎁</div>
             </div>
 
-            <!-- 6. QUESTIONS -->
+            <!-- 5. QUESTIONS -->
             <div class="questions-card">
                 <h2>U jawab su'aalahan yar Salmo ❤️</h2>
 
@@ -132,14 +135,12 @@
             document.getElementById('subHeader').innerText = "Halkan ka daawo dhammaan hadiyadahaaga!";
             document.getElementById('reveal-section').classList.add('active');
             const video = document.getElementById('myVideo');
-            if (video) {
-                video.play().catch(function(e) {});
-            }
+            if (video) video.play().catch(() => {});
         }
         function setAnswer(qNum, value, btn) {
             answers[qNum] = value;
             const buttons = btn.parentElement.querySelectorAll('.opt-btn');
-            buttons.forEach(function(b) { b.classList.remove('selected'); });
+            buttons.forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             if (Object.keys(answers).length === 3) {
                 document.getElementById('sendBtn').disabled = false;
@@ -156,5 +157,5 @@
             window.location.href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(msg);
         }
     </script>
-</body>
+</body> 
 </html>
